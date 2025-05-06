@@ -1,4 +1,4 @@
-# mystify-url-shortener
+# Mystify URL Shortener
 
 ## Project setup
 ```
