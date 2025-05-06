@@ -7,9 +7,20 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3.5",
     "core-js": "^3.8.3",
+    "pinia": "^3.0.2",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "vue-spinner": "^1.0.4",
+    "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
