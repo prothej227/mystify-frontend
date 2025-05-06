@@ -10,39 +10,52 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
-    meta: { requiresAuth: true } 
+    meta: {
+      requiresAuth: true,
+      title: 'Home'
+    }
   },
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
-    meta: { requiresAuth: true } 
+    meta: {
+      requiresAuth: true,
+      title: 'About'
+    }
   },
   {
     path: '/url-list',
     name: 'url-list',
     component: UrlListView,
-    meta: { requiresAuth: true } 
+    meta: {
+      requiresAuth: true,
+      title: 'My URLs'
+    }
   },
   {
     path: '/login',
     name: 'login',
-    component: LoginView
+    component: LoginView,
+    meta: {
+      title: 'Login'
+    }
   },
   {
     path: '/register',
     name: 'register',
-    component: RegisterView
-  },
+    component: RegisterView,
+    meta: {
+      title: 'Register'
+    }
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   const unprotectedPaths = ['/login', '/register']
@@ -54,17 +67,16 @@ router.beforeEach(async (to, from, next) => {
   const isLoggedIn = !!userStore.user?.current_active_uuid
 
   if (unprotectedPaths.includes(to.path) && isLoggedIn) {
-    // Prevent logged-in users from visiting /login
     return next('/')
   }
 
   if (to.meta.requiresAuth && !isLoggedIn) {
-    // Redirect unauthenticated users from protected routes
     return next('/login')
   }
 
-  next()
+  document.title = `Mystify v1 | ${to.meta.title}`|| 'Mystify v1'
 
-  
+  next()
 })
+
 export default router
