@@ -36,7 +36,7 @@
                       <option value="custom">Custom Alias</option>
                     </select>
                   </div>
-                  <transition name="fade">
+                  <Transition name="fade">
                   <div class="input-group mb-2" v-if="strategy === 'custom'">
                     <div class="input-group-prepend">
                       <div class="input-group-text fw-light">
@@ -53,7 +53,7 @@
                       required
                     />
                   </div>
-                  </transition>
+                  </Transition>
                   <div class="d-grid">
                     <button type="submit" class="btn btn-outline-dark">
                       <FontAwesomeIcon :icon="['fas', 'fa-link-slash']" />
@@ -76,6 +76,9 @@
                       v-model="newUrl"
                       readonly
                     />
+                    <div class="input-group-append">
+                      <button class="input-group-text" @click="triggerCopy"><FontAwesomeIcon :icon="['fas', 'clipboard']" class="me-2"/>Copy</button>
+                    </div>
                   </div>
               </div>
             </div>
@@ -90,6 +93,9 @@
 import axios from 'axios';
 import {ref} from 'vue';
 import { BASE_PATH, API_ENDPOINTS } from '@/constants/api';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 export default {
   name: 'HomeView',
   components: {
@@ -101,6 +107,23 @@ export default {
     const customAlias = ref('')
     const newUrl = ref('')
     const bearerToken = localStorage.getItem('access_token')
+
+    const triggerCopy = async () => {
+      try {
+        await navigator.clipboard.writeText(newUrl.value)
+        toast("Copied to clipboard.", {
+        "theme":"dark",
+        "type": "success",
+        "autoClose": 1000,
+        "position": "bottom-center",
+        "transition": "slide",
+        "dangerouslyHTMLString": true
+      })
+      } catch (err) {
+        console.error('Failed to copy: ', err)
+      } 
+    }
+
     const shortenUrl = async () => {
       try {
         const payload = {
@@ -131,7 +154,8 @@ export default {
       strategy,
       customAlias,
       shortenUrl,
-      newUrl
+      newUrl,
+      triggerCopy
     }
   }
 }

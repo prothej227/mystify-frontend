@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', () => {
 
   const fetchUser = async () => {
     const token = localStorage.getItem('access_token')
+
     if (!token) {
       user.value = null
       return
@@ -21,7 +22,11 @@ export const useUserStore = defineStore('user', () => {
       })
       user.value = res.data
     } catch (e) {
+      if (e.response?.status === 401) {
+        localStorage.removeItem('access_token')
+      }
       user.value = null
+      
     }
   }
 

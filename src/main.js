@@ -23,7 +23,9 @@ import {
     faCalendarDays,
     faComputerMouse,
     faChartLine,
-    faEnvelope
+    faEnvelope,
+    faServer,
+    faClipboard
 } from '@fortawesome/free-solid-svg-icons'
 import {
     faUser,
@@ -53,7 +55,9 @@ library.add(
     faCalendarDays,
     faComputerMouse,
     faChartLine,
-    faEnvelope
+    faEnvelope,
+    faServer,
+    faClipboard
 )
 
 const app = createApp(App)

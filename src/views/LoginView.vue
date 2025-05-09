@@ -6,6 +6,7 @@
                     <div class="card-header text-bg-dark font-monospace">Mystify | Login</div>
                     <div class="card-body font-monospace">
                         <form @submit.prevent="login">
+                        <HealthCheck />
                         <div class="input-group mb-2">
                             <div class="input-group-prepend">
                             <div class="input-group-text input-lbl-fixed">
@@ -41,10 +42,10 @@
                         </div>
                         </form>
                     </div>
-                    <div v-if="error" class="card-footer font-monospace d-flex justify-content-start">
-                        <small class="text-danger">Error: {{ error }}</small>
+                    <div v-if="error" class="card-footer bg-dark font-monospace d-flex justify-content-start">
+                        <small class="text-white">Error: {{ error }}</small>
                     </div>
-                    <div v-else class="card-footer">
+                    <div class="card-footer">
                         <small class="text-secondary">No account yet?
                             <RouterLink to="/register" class="text-dark">Register here</RouterLink>
                         </small>
@@ -61,9 +62,13 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 import { API_ENDPOINTS } from '@/constants/api'
+import HealthCheck from '@/components/HealthCheck.vue'
 
 export default {
     name: "LoginVue",
+    components: {
+        HealthCheck
+    },
     setup () {
         // reactive state
         const userStore = useUserStore()
@@ -89,7 +94,12 @@ export default {
             await userStore.fetchUser()
             router.push('/')
         } catch (err) {
-            error.value = 'Invalid credentials or unathorized user.'
+            if (err.status === 401) {
+                error.value = "Wrong credentials or unauthorized account."
+            } else {
+             error.value = err.response?.data?.message || err.message || 'An unknown error occurred.'
+            }
+  
         }
         }
         return {
